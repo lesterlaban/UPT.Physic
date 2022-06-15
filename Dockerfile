@@ -7,8 +7,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
-COPY ["UPT.Physic/UPT.Physic.csproj", "UPT.Physic/"]
-RUN dotnet restore "UPT.Physic/UPT.Physic.csproj"
+COPY ["UPT.Physic.csproj", "UPT.Physic/"]
+RUN dotnet restore "UPT.Physic.csproj"
 COPY . .
 WORKDIR "/src/UPT.Physic"
 RUN dotnet build "UPT.Physic.csproj" -c Release -o /app/build

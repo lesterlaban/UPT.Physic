@@ -70,13 +70,26 @@ namespace UPT.Physic.DataAccess
         {
             modelBuilder.Entity<NivelDolor>(entity =>
             {
-                entity.ToTable("niveldolor");
+                entity.ToTable("nivel_dolor");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.Descripcion).HasColumnName("descripcion");
                 entity.Property(e => e.Estado).HasColumnName("estado");
             });
         }
+
+        public static void SetZonaDolorEntity(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ZonaDolor>(entity =>
+            {
+                entity.ToTable("zona_dolor");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Descripcion).HasColumnName("descripcion");
+                entity.Property(e => e.Estado).HasColumnName("estado");
+            });
+        }
+
 
         public static void SetRecursoEntity(this ModelBuilder modelBuilder)
         {
@@ -116,7 +129,7 @@ namespace UPT.Physic.DataAccess
         {
             modelBuilder.Entity<TratamientoRecurso>(entity =>
             {
-                entity.ToTable("tratamientorecurso");
+                entity.ToTable("tratamiento_recurso");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.IdTratamiento).HasColumnName("idtratamiento");
@@ -134,7 +147,7 @@ namespace UPT.Physic.DataAccess
         {
             modelBuilder.Entity<RegistroConsulta>(entity =>
             {
-                entity.ToTable("registroconsulta");
+                entity.ToTable("registro_consulta");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.IdZona).HasColumnName("idzona");

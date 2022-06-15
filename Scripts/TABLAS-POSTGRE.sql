@@ -116,10 +116,12 @@ create table registro_consulta
 
 INSERT INTO rol (codigo, estado) VALUES ('ADMIN', true), ('PACIENTE', true);
 INSERT INTO usuario (nombre, contrasenia, idrol, estado) VALUES 
-('LESTER', '123456', 1, true), 
-('ALLY', '123456', 2, true);
+('LESTER', '123456', 1, true);
 
-INSERT INTO PREGUNTA(pregunta, estado) VALUES ('¿Cuanto califica su nivel de entrenamiento?', true), ('¿Hace Ejercicio frecuentemente? considere 1 la minima opción.', true);
+INSERT INTO PREGUNTA(descripcion, estado) 
+VALUES ('Tengo miedo de lesionarme si hago ejercicio físico', true), 
+('Si me dejara vencer por el dolor, el dolor aumentaría.', true)
+;
 
 
 

@@ -21,6 +21,7 @@ namespace UPT.Physic.DataAccess
             modelBuilder.SetPreguntaEntity();
             modelBuilder.SetEncuestaEntity();
             modelBuilder.SetNivelDolorEntity();
+            modelBuilder.SetZonaDolorEntity();
             modelBuilder.SetRecursoEntity();
             modelBuilder.SetTratamientoEntity();
             modelBuilder.SetTratamientoRecursoEntity();

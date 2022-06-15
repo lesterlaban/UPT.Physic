@@ -38,8 +38,7 @@ namespace UPT.Physic.Controllers
             catch (Exception excepcion)
             {
                 //Logger.Write("Error 500: " + excepcion.Message);
-                Console.Write(excepcion.Message);
-                return StatusCode(500);
+                return BadRequest(excepcion.ToString());
             }
         }
     }

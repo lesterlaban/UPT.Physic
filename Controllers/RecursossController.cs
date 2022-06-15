@@ -26,7 +26,7 @@ namespace UPT.Physic.Controllers
 				return result;
 			});
 		}		
-		[Route("id")]
+		[Route("{id}")]
 		[HttpGet]
 		public async Task<IActionResult> GetById(int id)
 		{

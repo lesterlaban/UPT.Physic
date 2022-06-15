@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using UPT.Physic.DataAccess;
 using UPT.Physic.Models;
+using System.Linq;
+using System;
 
 namespace UPT.Physic.Controllers
 {
@@ -26,6 +28,21 @@ namespace UPT.Physic.Controllers
 				return result;
 			});
 		}
+
+		[Route("filters")]
+		[HttpGet]
+		public async Task<IActionResult> GetByFilters(string usuario, string password)
+		{
+			return await InvokeAsyncFunction(async () =>
+			{
+				var list = await _repository.GetByFilter<Usuario>(u=> u.Nombre == usuario && u.Contrasenia == password);
+				var result = list.FirstOrDefault();
+				if(result == null)
+					throw new ApplicationException("Usuario o contraseña no válidos.");
+				return result;
+			});
+		}
+
 
 		[Route("Roles")]
 		[HttpGet]

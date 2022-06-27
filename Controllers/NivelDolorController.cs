@@ -22,7 +22,7 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var result = await _repository.GetAll<NivelDolor>();
+				var result = await _repository.GetByFilter<NivelDolor>(e => e.Estado);
 				return result;
 			});
 		}		

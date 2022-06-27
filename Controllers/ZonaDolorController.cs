@@ -22,7 +22,7 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var result = await _repository.GetAll<ZonaDolor>();
+				var result = await _repository.GetByFilter<ZonaDolor>(e => e.Estado, 0, 0);
 				return result;
 			});
 		}		

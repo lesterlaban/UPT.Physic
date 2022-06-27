@@ -16,6 +16,8 @@ namespace UPT.Physic.DataAccess
                 entity.Property(e => e.Contrasenia).HasColumnName("contrasenia");
                 entity.Property(e => e.IdRol).HasColumnName("idrol");
                 entity.Property(e => e.Estado).HasColumnName("estado");
+                entity.Ignore(e => e.TieneEncuesta);
+                entity.Ignore(e => e.PuntajeEncuesta);
                 entity.HasOne<Rol>(e => e.Rol)
                     .WithMany(g => g.Usuarios)
                     .HasForeignKey(s => s.IdRol);
@@ -150,9 +152,11 @@ namespace UPT.Physic.DataAccess
                 entity.ToTable("registro_consulta");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.IdUsuario).HasColumnName("idusuario");
                 entity.Property(e => e.IdZona).HasColumnName("idzona");
                 entity.Property(e => e.IdNivelDolor).HasColumnName("idniveldolor");
                 entity.Property(e => e.PuntajeMinimo).HasColumnName("puntajeminimo");
+                entity.Property(e => e.Fecha).HasColumnName("fecha");
                 entity.Property(e => e.Estado).HasColumnName("estado");
                 entity.HasOne<NivelDolor>(e => e.NivelDolor)
                     .WithMany(g => g.Consultas)
@@ -160,6 +164,11 @@ namespace UPT.Physic.DataAccess
                 entity.HasOne<ZonaDolor>(e => e.ZonaDolor)
                     .WithMany(g => g.Consultas)
                     .HasForeignKey(s => s.IdZona);
+                entity.HasOne<Usuario>(e => e.Usuario)
+                    .WithMany(g => g.Consultas)
+                    .HasForeignKey(s => s.IdUsuario);
+
+
             });
         }
 

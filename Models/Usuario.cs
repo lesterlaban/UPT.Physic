@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace UPT.Physic.Models
 {
@@ -11,6 +12,9 @@ namespace UPT.Physic.Models
 		public virtual Rol Rol { get; set; }
 		public bool Estado{ get; set; }
 		public virtual List<Encuesta> Encuestas {get; set;}
+		public bool TieneEncuesta => Encuestas == null || !Encuestas.Any() ? false : true;
+		public int PuntajeEncuesta => TieneEncuesta ? Encuestas.Sum(e=> e.Puntaje) : default(int);
+		public virtual List<RegistroConsulta> Consultas { get; set; }
 	}
 	public class Rol
 	{
@@ -19,5 +23,4 @@ namespace UPT.Physic.Models
 		public bool Estado { get; set; }
 		public virtual List<Usuario> Usuarios {get; set;}
 	}
-
 }

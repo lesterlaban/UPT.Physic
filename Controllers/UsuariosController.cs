@@ -4,6 +4,7 @@ using UPT.Physic.DataAccess;
 using UPT.Physic.Models;
 using System.Linq;
 using System;
+using System.Linq.Expressions;
 
 namespace UPT.Physic.Controllers
 {
@@ -35,10 +36,19 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var list = await _repository.GetByFilter<Usuario>(u=> u.Nombre == usuario && u.Contrasenia == password);
+				var includes = new Expression<Func<Usuario, object>>[] 
+				{
+					a => a.Encuestas, a => a.Rol,
+				};
+				var usuarioUpper = string.IsNullOrEmpty(usuario) ? string.Empty : usuario.Trim().ToUpper();
+				var list = await _repository.GetByFilter<Usuario>(u => 
+					u.Nombre.Trim().ToUpper() ==  usuarioUpper && 
+					u.Contrasenia == password && 
+					u.Estado, 
+					0,0,includes);
 				var result = list.FirstOrDefault();
 				if(result == null)
-					throw new ApplicationException("Usuario o contraseña no válidos.");
+					throw new ApplicationException($"Usuario o contraseña no válidos.");
 				return result;
 			});
 		}
@@ -60,6 +70,11 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
+				var usuarioUpper = string.IsNullOrEmpty(entidad.Nombre) ? string.Empty : entidad.Nombre.Trim().ToUpper();
+				var existing = await _repository.GetByFilter<Usuario>(u => 
+					u.Nombre.Trim().ToUpper() == usuarioUpper);
+				if(existing.Any())
+					throw new ApplicationException($"Usuario con código {entidad.Nombre} ya existe, favor digite otro usuario.");
 				var result = await _repository.Add(entidad);
 				await _repository.SaveChangesAsync();
 				return entidad.Id;

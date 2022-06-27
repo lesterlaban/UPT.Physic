@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using UPT.Physic.DataAccess;
@@ -9,11 +11,11 @@ namespace UPT.Physic.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]
-	public class TratamientosController : BaseController
+	public class RecursosController : BaseController
 	{
 		private readonly IRepository _repository;
 
-		public TratamientosController(IRepository repository)
+		public RecursosController(IRepository repository)
 		{
 			_repository = repository;
 		}
@@ -24,11 +26,21 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var includes = new Expression<Func<Tratamiento, object>>[] { u => u.NivelDolor, u => u.ZonaDolor};
-				var result = await _repository.GetByFilter<Tratamiento>(e => e.Estado, 0, 0, includes);
+				var result = await _repository.GetByFilter<Recurso>(e => e.Estado, 0, 0);
 				return result;
 			});
-		}
+		}	
+			
+		[HttpPost]
+		public async Task<IActionResult> Add([FromBody] Recurso entidad)
+		{
+			return await InvokeAsyncFunction(async () =>
+			{
+				var result = await _repository.Add(entidad);
+				await _repository.SaveChangesAsync();
+				return entidad.Id;
+			});
+		}	
 
 		[Route("filters")]
 		[HttpGet]
@@ -40,25 +52,20 @@ namespace UPT.Physic.Controllers
 				var consulta = await _repository.GetByKeys<RegistroConsulta>(idConsulta);
 				if(consulta == null)
 					throw new ApplicationException($"No se encontró la consulta con clave {idConsulta}.");
-				var result = await _repository.GetByFilter<Tratamiento>(t => 
+				var tratamientos = await _repository.GetByFilter<Tratamiento>(t => 
 					t.IdNivelDolor == consulta.IdNivelDolor && 
 					t.IdZona == consulta.IdZona && 
 					consulta.Usuario.PuntajeEncuesta >= t.PuntajeMinimo && 
 					consulta.Usuario.PuntajeEncuesta <= t.PuntajeMaximo, 0,0, includes);
-				return result;
-			});
-		}
+				var result = new List<Recurso>();
 
-		[HttpPost]
-		public async Task<IActionResult> Add([FromBody] Tratamiento entidad)
-		{
-			return await InvokeAsyncFunction(async () =>
-			{
-				var result = await _repository.Add(entidad);
-				await _repository.SaveChangesAsync();
-				return entidad.Id;
+				tratamientos.ForEach(tratamiento => 
+					result.AddRange(tratamiento.Recursos.Select(r => r.Recurso)));
+
+				return result.Distinct();
 			});
-		}		
+		}	
+
 
 	}
 }

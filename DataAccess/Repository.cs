@@ -72,7 +72,10 @@ namespace UPT.Physic.DataAccess
             includes.ToList().ForEach(i => result = result.Include(i));
             return await result.ToListAsync();
         }
-
+        public async Task AddList<T>(List<T> entities) where T : class
+        {
+            await _context.Set<T>().AddRangeAsync(entities);
+        }
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

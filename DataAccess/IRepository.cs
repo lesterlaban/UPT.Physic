@@ -62,5 +62,7 @@ namespace UPT.Physic.DataAccess
         /// <returns>Same Entity with related properties</returns>
         T IncludeMultiple<T>(T entity, List<Expression<Func<T, IEnumerable<object>>>> expressions)
             where T : class;
+
+        Task AddList<T>(List<T> entities) where T : class;
     }
 }

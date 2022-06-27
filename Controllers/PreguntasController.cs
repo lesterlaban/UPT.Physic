@@ -22,7 +22,7 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var result = await _repository.GetAll<Pregunta>(u=> u.Encuestas);
+				var result = await _repository.GetByFilter<Pregunta>(e => e.Estado, 0, 0, e => e.Encuestas);
 				return result;
 			});
 		}		

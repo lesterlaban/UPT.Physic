@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UPT.Physic.DataAccess;
 using UPT.Physic.Models;
@@ -22,19 +23,19 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var result = await _repository.GetAll<Encuesta>();
+				var result = await _repository.GetByFilter<Encuesta>(e => e.Estado);
 				return result;
 			});
-		}		
+		}
 
 		[HttpPost]
-		public async Task<IActionResult> Add([FromBody] Encuesta entidad)
+		public async Task<IActionResult> Add([FromBody] List<Encuesta> entidad)
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var result = await _repository.Add(entidad);
+				await _repository.AddList(entidad);
 				await _repository.SaveChangesAsync();
-				return entidad.Id;
+				return true;
 			});
 		}		
 

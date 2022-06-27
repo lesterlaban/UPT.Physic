@@ -66,6 +66,16 @@ namespace UPT.Physic.Controllers
 			});
 		}	
 
+		[Route("{id}")]
+		[HttpGet]
+		public async Task<IActionResult> GetBytId(int id)
+		{
+			return await InvokeAsyncFunction(async () =>
+			{
+				var result = await _repository.GetByKeys<Recurso>(id);
+				return result;
+			});
+		}
 
 	}
 }

@@ -106,7 +106,7 @@ create table registro_consulta
 	idzona int not null,
 	idniveldolor int not null,
 	puntajeminimo int not null,
-	fecha date not null,
+	fecha timestamp without time zone default now(),
 	estado boolean not null,
 	primary key (id),
 	foreign key (idusuario) references usuario(id),
@@ -120,5 +120,16 @@ INSERT INTO usuario (nombre, contrasenia, idrol, estado) VALUES
 INSERT INTO usuario (nombre, contrasenia, idrol, estado) VALUES 
 ('FISICO', '123456-a', 1, true);
 INSERT INTO usuario (nombre, contrasenia, idrol, estado) VALUES 
-('LESTER', '123456', 1, true);
+('LESTER', '123456', 2, true);
 
+INSERT INTO pregunta(descripcion, estado) values
+('Tengo miedo de lesionarme si hago ejercicio físico.', true),
+('Si me dejara vencer por el dolor, el dolor aumentaría.', true),
+('Mi cuerpo me está diciendo que tengo algo serio.', true),
+('Tener dolor siempre quiere decir que en el cuerpo hay una lesión.', true),
+('Tengo miedo de lesionarme sin querer.', true),
+('Lo más seguro para evitar que aumente el dolor es tener cuidado y no hacer movimientos innecesarios.', true),
+('No me dolería tanto si no tuviese algo serio en mi cuerpo.', true),
+('El dolor me dice cuándo debo parar la actividad para no lesionarme.', true),
+('No es seguro para una persona con mi enfermedad hacer actividades físicas. .', true)
+;

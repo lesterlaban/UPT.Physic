@@ -82,8 +82,9 @@ namespace UPT.Physic.Controllers
 			{
 				var includes = new Expression<Func<RegistroConsulta, object>>[] 
 					{ u => u.NivelDolor, u => u.ZonaDolor};
-				var result = await _repository.GetByFilter<RegistroConsulta>(c => 
+				var resultList = await _repository.GetByFilter<RegistroConsulta>(c => 
 					c.Id == id ,0,0 ,includes);
+				var result = resultList.FirstOrDefault();
 				return result;
 			});
 		}

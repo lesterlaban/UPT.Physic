@@ -18,8 +18,15 @@ namespace UPT.Physic.DataAccess
         {
             modelBuilder.SetRolEntity();
             modelBuilder.SetUsuarioEntity();
-            modelBuilder.SetPreguntaEntity();
+
             modelBuilder.SetEncuestaEntity();
+            modelBuilder.SetSeccionEntity();
+            modelBuilder.SetRangoSeccionEntity();
+            modelBuilder.SetPreguntaEntity();
+            modelBuilder.SetPreguntaUsuarioEntity();
+            modelBuilder.SetSeccionUsuarioEntity();
+            
+
             modelBuilder.SetNivelDolorEntity();
             modelBuilder.SetZonaDolorEntity();
             modelBuilder.SetRecursoEntity();

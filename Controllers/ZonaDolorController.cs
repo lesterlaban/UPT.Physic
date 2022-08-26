@@ -9,11 +9,8 @@ namespace UPT.Physic.Controllers
 	[Route("api/[controller]")]
 	public class ZonaDolorController : BaseController
 	{
-		private readonly IRepository _repository;
-
-		public ZonaDolorController(IRepository repository)
+		public ZonaDolorController(IRepository repository):base(repository)
 		{
-			_repository = repository;
 		}
 
 		[Route("")]
@@ -37,6 +34,19 @@ namespace UPT.Physic.Controllers
 				return entidad.Id;
 			});
 		}		
+
+		[HttpDelete]
+		[Route("id")]
+		public async Task<IActionResult> Delete(int id)
+		{
+			return await InvokeAsyncFunction(async () =>
+			{
+				var entity = await _repository.GetByKeys<ZonaDolor>(id);
+				await _repository.RemoveAsync(entity);
+				await _repository.SaveChangesAsync();
+				return true;
+			});
+		}	
 
 	}
 }

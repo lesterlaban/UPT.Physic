@@ -14,12 +14,10 @@ namespace UPT.Physic.Controllers
 	[Route("api/[controller]")]
 	public class ConsultasController : BaseController
 	{
-		private readonly IRepository _repository;
-
-		public ConsultasController(IRepository repository)
+		public ConsultasController(IRepository repository):base(repository)
 		{
-			_repository = repository;
 		}
+
 
 		[Route("")]
 		[HttpGet]
@@ -27,8 +25,8 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var includes = new Expression<Func<RegistroConsulta, object>>[] { u => u.NivelDolor, u => u.ZonaDolor};
-				var result = await _repository.GetAll<RegistroConsulta>(includes);
+				var includes = new List<string>() { "NivelDolor", "ZonaDolor" };
+				var result = await _repository.GetByFilterString<RegistroConsulta>(r=> r.Estado, includes);
 				return result;
 			});
 		}
@@ -39,8 +37,7 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var includes = new Expression<Func<RegistroConsulta, object>>[] 
-					{ u => u.NivelDolor, u => u.ZonaDolor};
+				var includes = new List<string>() { "NivelDolor", "ZonaDolor" };
 				Expression<Func<RegistroConsulta, bool>> expression = x => true;
 				expression = expression.AndAlso(c => c.IdUsuario == idUsuario);
 				expression = expression.AndAlso(c => c.Estado);
@@ -48,7 +45,7 @@ namespace UPT.Physic.Controllers
 				if(fechas.Any())
 					expression = expression.AndAlso(c => fechas.Contains(c.Fecha.Date));
 
-				var resultQuery = await _repository.GetByFilter<RegistroConsulta>(expression ,0,0 ,includes);
+				var resultQuery = await _repository.GetByFilterString<RegistroConsulta>(expression, includes);
 
 				var result = resultQuery.Select(r => new RegistroConsulta()
 				{
@@ -80,10 +77,9 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var includes = new Expression<Func<RegistroConsulta, object>>[] 
-					{ u => u.NivelDolor, u => u.ZonaDolor};
-				var resultList = await _repository.GetByFilter<RegistroConsulta>(c => 
-					c.Id == id ,0,0 ,includes);
+				var includes = new List<string>() { "NivelDolor", "ZonaDolor" };
+				var resultList = await _repository.GetByFilterString<RegistroConsulta>(c => 
+					c.Id == id ,includes);
 				var result = resultList.FirstOrDefault();
 				return result;
 			});
@@ -100,5 +96,17 @@ namespace UPT.Physic.Controllers
 			});
 		}
 
+		[HttpDelete]
+		[Route("id")]
+		public async Task<IActionResult> Delete(int id)
+		{
+			return await InvokeAsyncFunction(async () =>
+			{
+				var entity = await _repository.GetByKeys<RegistroConsulta>(id);
+				await _repository.RemoveAsync(entity);
+				await _repository.SaveChangesAsync();
+				return true;
+			});
+		}	
 	}
 }

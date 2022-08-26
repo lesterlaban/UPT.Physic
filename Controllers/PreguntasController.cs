@@ -9,11 +9,8 @@ namespace UPT.Physic.Controllers
 	[Route("api/[controller]")]
 	public class PreguntasController : BaseController
 	{
-		private readonly IRepository _repository;
-
-		public PreguntasController(IRepository repository)
+		public PreguntasController(IRepository repository):base(repository)
 		{
-			_repository = repository;
 		}
 
 		[Route("")]
@@ -22,7 +19,7 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var result = await _repository.GetByFilter<Pregunta>(e => e.Estado, 0, 0, e => e.Encuestas);
+				var result = await _repository.GetByFilter<Pregunta>(e => e.Estado);
 				return result;
 			});
 		}		
@@ -38,6 +35,18 @@ namespace UPT.Physic.Controllers
 			});
 		}		
 
+		[HttpDelete]
+		[Route("id")]
+		public async Task<IActionResult> Delete(int id)
+		{
+			return await InvokeAsyncFunction(async () =>
+			{
+				var entity = await _repository.GetByKeys<Pregunta>(id);
+				await _repository.RemoveAsync(entity);
+				await _repository.SaveChangesAsync();
+				return true;
+			});
+		}	
 
 	}
 }

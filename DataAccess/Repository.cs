@@ -87,5 +87,15 @@ namespace UPT.Physic.DataAccess
             includes.ToList().ForEach(i => entities = entities.Include(i));
             return await entities.ToListAsync();
         }
+
+        public async Task<List<TEntity>> GetByFilterString<TEntity>(
+            Expression<Func<TEntity, bool>> filter,List<string> includes) where TEntity : class
+        {
+            IQueryable<TEntity> result = _context.Set<TEntity>().Where(filter);
+            includes.ToList().ForEach(i => result = result.Include(i));
+            return await result.ToListAsync();
+        }
+
+
     }
 }

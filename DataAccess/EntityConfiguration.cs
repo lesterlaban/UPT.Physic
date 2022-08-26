@@ -17,7 +17,6 @@ namespace UPT.Physic.DataAccess
                 entity.Property(e => e.IdRol).HasColumnName("idrol");
                 entity.Property(e => e.Estado).HasColumnName("estado");
                 entity.Ignore(e => e.TieneEncuesta);
-                entity.Ignore(e => e.PuntajeEncuesta);
                 entity.HasOne<Rol>(e => e.Rol)
                     .WithMany(g => g.Usuarios)
                     .HasForeignKey(s => s.IdRol);
@@ -36,18 +35,6 @@ namespace UPT.Physic.DataAccess
             });
         }
 
-        public static void SetPreguntaEntity(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Pregunta>(entity =>
-            {
-                entity.ToTable("pregunta");
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.Descripcion).HasColumnName("descripcion");
-                entity.Property(e => e.Estado).HasColumnName("estado");
-            });
-        }
-
         public static void SetEncuestaEntity(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Encuesta>(entity =>
@@ -55,19 +42,102 @@ namespace UPT.Physic.DataAccess
                 entity.ToTable("encuesta");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Nombre).HasColumnName("nombre");
+                entity.Property(e => e.Estado).HasColumnName("estado");
+            });
+        }
+
+        public static void SetSeccionEntity(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EncuestaSeccion>(entity =>
+            {
+                entity.ToTable("encuesta_seccion");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.IdEncuesta).HasColumnName("idencuesta");
+                entity.Property(e => e.Nombre).HasColumnName("nombre");
+                entity.Property(e => e.Indicadores).HasColumnName("indicadores");
+                entity.Property(e => e.Estado).HasColumnName("estado");
+                entity.HasOne<Encuesta>(e => e.Encuesta)
+                    .WithMany(g => g.Secciones)
+                    .HasForeignKey(s => s.IdEncuesta);
+            });
+        }
+
+        public static void SetRangoSeccionEntity(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RangoSeccion>(entity =>
+            {
+                entity.ToTable("rango_seccion");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.IdEncuestaSeccion).HasColumnName("idencuestaseccion");
+                entity.Property(e => e.Nombre).HasColumnName("nombre");
+                entity.Property(e => e.ValorMinimo).HasColumnName("valorminimo");
+                entity.Property(e => e.ValorMaximo).HasColumnName("valormmaximo");
+                entity.Property(e => e.Estado).HasColumnName("estado");
+                entity.HasOne<EncuestaSeccion>(e => e.Seccion)
+                    .WithMany(g => g.Rangos)
+                    .HasForeignKey(s => s.IdEncuestaSeccion);
+            });
+        }
+
+        public static void SetPreguntaEntity(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Pregunta>(entity =>
+            {
+                entity.ToTable("pregunta");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.IdEncuestaSeccion).HasColumnName("idencuestaseccion");
+                entity.Property(e => e.Descripcion).HasColumnName("descripcion");
+                entity.Property(e => e.Estado).HasColumnName("estado");
+                entity.HasOne<EncuestaSeccion>(e => e.Seccion)
+                    .WithMany(g => g.Preguntas)
+                    .HasForeignKey(s => s.IdEncuestaSeccion);
+            });
+        }
+
+        public static void SetPreguntaUsuarioEntity(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PreguntaUsuario>(entity =>
+            {
+                entity.ToTable("pregunta_usuario");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.IdPregunta).HasColumnName("idpregunta");
                 entity.Property(e => e.IdUsuario).HasColumnName("idusuario");
                 entity.Property(e => e.Puntaje).HasColumnName("puntaje");
                 entity.Property(e => e.Estado).HasColumnName("estado");
                 entity.HasOne<Pregunta>(e => e.Pregunta)
-                    .WithMany(g => g.Encuestas)
+                    .WithMany(g => g.PreguntaUsuario)
                     .HasForeignKey(s => s.IdPregunta);
                 entity.HasOne<Usuario>(e => e.Usuario)
-                    .WithMany(g => g.Encuestas)
+                    .WithMany(g => g.PreguntaUsuario)
                     .HasForeignKey(s => s.IdUsuario);
             });
         }
-    
+        
+        public static void SetSeccionUsuarioEntity(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SeccionUsuario>(entity =>
+            {
+                entity.ToTable("encuesta_seccion_usuario");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.IdEncuestaSeccion).HasColumnName("idencuestaseccion");
+                entity.Property(e => e.IdUsuario).HasColumnName("idusuario");
+                entity.Property(e => e.Puntaje).HasColumnName("puntaje");
+                entity.Property(e => e.Estado).HasColumnName("estado");
+                entity.HasOne<EncuestaSeccion>(e => e.Seccion)
+                    .WithMany(g => g.SeccionUsuario)
+                    .HasForeignKey(s => s.IdEncuestaSeccion);
+                entity.HasOne<Usuario>(e => e.Usuario)
+                    .WithMany(g => g.SeccionUsuario)
+                    .HasForeignKey(s => s.IdUsuario);
+            });
+        }
+        
         public static void SetNivelDolorEntity(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<NivelDolor>(entity =>

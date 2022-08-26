@@ -5,6 +5,7 @@ using UPT.Physic.Models;
 using System.Linq;
 using System;
 using System.Linq.Expressions;
+using System.Collections.Generic;
 
 namespace UPT.Physic.Controllers
 {
@@ -12,11 +13,8 @@ namespace UPT.Physic.Controllers
 	[Route("api/[controller]")]
 	public class UsuariosController : BaseController
 	{
-		private readonly IRepository _repository;
-
-		public UsuariosController(IRepository repository)
+		public UsuariosController(IRepository repository):base(repository)
 		{
-			_repository = repository;
 		}
 
 		[Route("")]
@@ -36,16 +34,13 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var includes = new Expression<Func<Usuario, object>>[] 
-				{
-					a => a.Encuestas, a => a.Rol,
-				};
+				var includes = new List<string>() { "Rol" };
 				var usuarioUpper = string.IsNullOrEmpty(usuario) ? string.Empty : usuario.Trim().ToUpper();
-				var list = await _repository.GetByFilter<Usuario>(u => 
+				var list = await _repository.GetByFilterString<Usuario>(u => 
 					u.Nombre.Trim().ToUpper() ==  usuarioUpper && 
 					u.Contrasenia == password && 
 					u.Estado, 
-					0,0,includes);
+					includes);
 				var result = list.FirstOrDefault();
 				if(result == null)
 					throw new ApplicationException($"Usuario o contraseña no válidos.");
@@ -79,8 +74,20 @@ namespace UPT.Physic.Controllers
 				await _repository.SaveChangesAsync();
 				return entidad.Id;
 			});
-		}		
+		}	
 
+		[HttpDelete]
+		[Route("id")]
+		public async Task<IActionResult> Delete(int id)
+		{
+			return await InvokeAsyncFunction(async () =>
+			{
+				var entity = await _repository.GetByKeys<Usuario>(id);
+				await _repository.RemoveAsync(entity);
+				await _repository.SaveChangesAsync();
+				return true;
+			});
+		}		
 
 	}
 }

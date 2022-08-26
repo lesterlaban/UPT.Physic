@@ -2,11 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UPT.Physic.DataAccess;
 
 namespace UPT.Physic.Controllers
 {
 	public class BaseController : ControllerBase
 	{
+        protected readonly IRepository _repository;
+
+        public BaseController(IRepository repository)
+        {
+            _repository = repository;
+        }
+
         /// <summary>
         /// Method to invoke async functions 
         /// </summary>
@@ -41,5 +49,6 @@ namespace UPT.Physic.Controllers
                 return BadRequest(excepcion.ToString());
             }
         }
+
     }
 }

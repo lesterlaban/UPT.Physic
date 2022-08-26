@@ -11,9 +11,11 @@ namespace UPT.Physic.Models
 		public int IdRol { get; set; }
 		public virtual Rol Rol { get; set; }
 		public bool Estado{ get; set; }
-		public virtual List<Encuesta> Encuestas {get; set;}
-		public bool TieneEncuesta => Encuestas == null || !Encuestas.Any() ? false : true;
-		public int PuntajeEncuesta => TieneEncuesta ? Encuestas.Sum(e=> e.Puntaje) : default(int);
+		public bool TieneEncuesta => SeccionUsuario == null || !SeccionUsuario.Any() ? false : true;
+		
+		public virtual List<PreguntaUsuario> PreguntaUsuario { get; set; }
+		public virtual List<SeccionUsuario> SeccionUsuario { get; set; }
+
 		public virtual List<RegistroConsulta> Consultas { get; set; }
 	}
 	public class Rol

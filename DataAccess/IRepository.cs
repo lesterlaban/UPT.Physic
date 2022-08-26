@@ -64,5 +64,8 @@ namespace UPT.Physic.DataAccess
             where T : class;
 
         Task AddList<T>(List<T> entities) where T : class;
+
+        Task<List<TEntity>> GetByFilterString<TEntity>(
+            Expression<Func<TEntity, bool>> filter, List<string> includes) where TEntity : class;
     }
 }

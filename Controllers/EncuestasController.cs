@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using UPT.Physic.DataAccess;
 using UPT.Physic.Models;
@@ -10,11 +12,8 @@ namespace UPT.Physic.Controllers
 	[Route("api/[controller]")]
 	public class EncuestasController : BaseController
 	{
-		private readonly IRepository _repository;
-
-		public EncuestasController(IRepository repository)
+		public EncuestasController(IRepository repository):base(repository)
 		{
-			_repository = repository;
 		}
 
 		[Route("")]
@@ -23,7 +22,8 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var result = await _repository.GetByFilter<Encuesta>(e => e.Estado);
+				var includes = new List<string> { "Secciones", "Secciones.Preguntas"};
+				var result = await _repository.GetByFilterString<Encuesta>(e => e.Estado, includes);
 				return result;
 			});
 		}
@@ -37,7 +37,7 @@ namespace UPT.Physic.Controllers
 				await _repository.SaveChangesAsync();
 				return true;
 			});
-		}		
+		}
 
 	}
 }

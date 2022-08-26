@@ -13,11 +13,8 @@ namespace UPT.Physic.Controllers
 	[Route("api/[controller]")]
 	public class RecursosController : BaseController
 	{
-		private readonly IRepository _repository;
-
-		public RecursosController(IRepository repository)
+		public RecursosController(IRepository repository):base(repository)
 		{
-			_repository = repository;
 		}
 
 		[Route("")]
@@ -48,7 +45,7 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var includesConsulta = new Expression<Func<RegistroConsulta, object>>[] { u => u.Usuario, u => u.Usuario.Encuestas};
+				var includesConsulta = new Expression<Func<RegistroConsulta, object>>[] { u => u.Usuario};
 				var list = await _repository.GetByFilter<RegistroConsulta>(c=> c.Id == idConsulta, 0, 0, includesConsulta);
 				var consulta = list.FirstOrDefault();
 				if(consulta == null)
@@ -57,9 +54,10 @@ namespace UPT.Physic.Controllers
 				var includes = new Expression<Func<TratamientoRecurso, object>>[] {u => u.Recurso};
 				var tratamientoRecurso = await _repository.GetByFilter<TratamientoRecurso>(t => 
 					t.Tratamiento.IdNivelDolor == consulta.IdNivelDolor && 
-					t.Tratamiento.IdZona == consulta.IdZona && 
-					consulta.Usuario.PuntajeEncuesta >= t.Tratamiento.PuntajeMinimo && 
-					consulta.Usuario.PuntajeEncuesta <= t.Tratamiento.PuntajeMaximo, 0,0, includes);
+					t.Tratamiento.IdZona == consulta.IdZona,
+					//consulta.Usuario.PuntajeEncuesta >= t.Tratamiento.PuntajeMinimo && 
+					//consulta.Usuario.PuntajeEncuesta <= t.Tratamiento.PuntajeMaximo, 
+					0,0, includes);
 
 				var result = tratamientoRecurso.ToList().Select(r => r.Recurso);
 	
@@ -77,6 +75,19 @@ namespace UPT.Physic.Controllers
 				return result;
 			});
 		}
+
+		[HttpDelete]
+		[Route("id")]
+		public async Task<IActionResult> Delete(int id)
+		{
+			return await InvokeAsyncFunction(async () =>
+			{
+				var entity = await _repository.GetByKeys<Recurso>(id);
+				await _repository.RemoveAsync(entity);
+				await _repository.SaveChangesAsync();
+				return true;
+			});
+		}	
 
 	}
 }

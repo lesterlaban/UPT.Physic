@@ -237,10 +237,10 @@ namespace UPT.Physic.DataAccess
                 entity.HasOne<Usuario>(e => e.Usuario)
                     .WithMany(g => g.Consultas)
                     .HasForeignKey(s => s.IdUsuario);
-
-
             });
         }
+
+        
 
     }
 }

@@ -27,6 +27,7 @@ namespace UPT.Physic.Controllers
             {
                 Console.Write("EJECUTAR INVOKE...");
                 var resultado = await funcion.Invoke();
+                Console.Write("InvokeAsyncFunction -> To OK");
                 return Ok(resultado);
             }
             catch (KeyNotFoundException excepcion)

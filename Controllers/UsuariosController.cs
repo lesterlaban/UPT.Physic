@@ -26,6 +26,8 @@ namespace UPT.Physic.Controllers
 				var includes = new List<string>() { "Rol" };
 				Console.Write("GetAll -> GetByFilterString");
 				var result = await _repository.GetByFilterString<Usuario>(u=> u.Estado, includes);
+				Console.Write("GetAll uSERS RESULT ---");
+				Console.Write(result);
 				return result;
 			});
 		}

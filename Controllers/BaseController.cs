@@ -25,6 +25,7 @@ namespace UPT.Physic.Controllers
         {
             try
             {
+                Console.Write("EJECUTAR INVOKE");
                 var resultado = await funcion.Invoke();
                 return Ok(resultado);
             }
@@ -46,6 +47,7 @@ namespace UPT.Physic.Controllers
             catch (Exception excepcion)
             {
                 //Logger.Write("Error 500: " + excepcion.Message);
+                Console.Write(excepcion.Message);
                 return BadRequest(excepcion.Message);
             }
         }

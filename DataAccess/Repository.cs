@@ -39,39 +39,6 @@ namespace UPT.Physic.DataAccess
             return await Task.Run(() => _context.Set<T>().Remove(entity));
         }
 
-        public async Task<List<TEntity>> GetByFilterAndSort<TEntity>(Expression<Func<TEntity, bool>> filter,
-            Expression<Func<TEntity, object>> sortByDescending,
-            Expression<Func<TEntity, object>> sortThen,
-            int take = 0, int skip = 0,
-            params Expression<Func<TEntity, object>>[] includes
-            ) where TEntity : class
-        {
-            IQueryable<TEntity> result;
-
-            if (take == 0)
-                result = _context.Set<TEntity>().OrderByDescending(sortByDescending).ThenByDescending(sortThen).Where(filter).Skip(skip);
-            else
-                result = _context.Set<TEntity>().OrderByDescending(sortByDescending).ThenByDescending(sortThen).Where(filter).Skip(skip).Take(take);
-
-            includes.ToList().ForEach(i => result = result.Include(i));
-            return await result.ToListAsync();
-        }
-
-        public async Task<List<TEntity>> GetByFilter<TEntity>(Expression<Func<TEntity, bool>> filter,
-            int take = 0, int skip = 0,
-            params Expression<Func<TEntity, object>>[] includes
-            ) where TEntity : class
-        {
-            IQueryable<TEntity> result;
-
-            if (take == 0)
-                result = _context.Set<TEntity>().Where(filter).Skip(skip);
-            else
-                result = _context.Set<TEntity>().Where(filter).Skip(skip).Take(take);
-
-            includes.ToList().ForEach(i => result = result.Include(i));
-            return await result.ToListAsync();
-        }
         public async Task AddList<T>(List<T> entities) where T : class
         {
             await _context.Set<T>().AddRangeAsync(entities);
@@ -89,10 +56,11 @@ namespace UPT.Physic.DataAccess
         }
 
         public async Task<List<TEntity>> GetByFilterString<TEntity>(
-            Expression<Func<TEntity, bool>> filter,List<string> includes) where TEntity : class
+            Expression<Func<TEntity, bool>> filter, List<string> includes = null) where TEntity : class
         {
             IQueryable<TEntity> result = _context.Set<TEntity>().Where(filter);
-            includes.ToList().ForEach(i => result = result.Include(i));
+            if(includes != null)
+                includes.ToList().ForEach(i => result = result.Include(i));
             return await result.ToListAsync();
         }
 

@@ -21,25 +21,6 @@ namespace UPT.Physic.DataAccess
         /// <returns>entity</returns>
         Task<T> GetByKeys<T>(params object[] keys) where T : class;
         /// <summary>
-        /// Method to get entity by filters, and sort
-        /// </summary>
-        /// <typeparam name="TEntity">entity type</typeparam>
-        Task<List<TEntity>> GetByFilterAndSort<TEntity>(Expression<Func<TEntity, bool>> filter,
-            Expression<Func<TEntity, object>> sortByDescending,
-            Expression<Func<TEntity, object>> sortThen,
-            int take = 0, int skip = 0,
-            params Expression<Func<TEntity, object>>[] includes) where TEntity : class;
-
-        /// <summary>
-        /// Method to get a list of entities from postgre repository apllying filters
-        /// </summary>
-        /// <typeparam name="T">Entity To Get</typeparam>
-        /// <returns>list of entity</returns>
-        Task<List<TEntity>> GetByFilter<TEntity>(Expression<Func<TEntity, bool>> filter,
-            int take = 0, int skip = 0,
-            params Expression<Func<TEntity, object>>[] includes) where TEntity : class;
-
-        /// <summary>
         /// Method to add new entity
         /// </summary>
         /// <typeparam name="T">entity type</typeparam>
@@ -66,6 +47,6 @@ namespace UPT.Physic.DataAccess
         Task AddList<T>(List<T> entities) where T : class;
 
         Task<List<TEntity>> GetByFilterString<TEntity>(
-            Expression<Func<TEntity, bool>> filter, List<string> includes) where TEntity : class;
+            Expression<Func<TEntity, bool>> filter, List<string> includes = null) where TEntity : class;
     }
 }

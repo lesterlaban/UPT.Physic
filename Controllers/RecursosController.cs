@@ -23,7 +23,7 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var result = await _repository.GetByFilter<Recurso>(e => e.Estado, 0, 0);
+				var result = await _repository.GetByFilterString<Recurso>(e => e.Estado);
 				return result;
 			});
 		}	
@@ -45,19 +45,19 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var includesConsulta = new Expression<Func<RegistroConsulta, object>>[] { u => u.Usuario};
-				var list = await _repository.GetByFilter<RegistroConsulta>(c=> c.Id == idConsulta, 0, 0, includesConsulta);
+				var includesRegistro = new List<string>() { "Usuario" };
+				var list = await _repository.GetByFilterString<RegistroConsulta>(c=> c.Id == idConsulta, includesRegistro);
 				var consulta = list.FirstOrDefault();
 				if(consulta == null)
 					throw new ApplicationException($"No se encontró la consulta con clave {idConsulta}.");
 
-				var includes = new Expression<Func<TratamientoRecurso, object>>[] {u => u.Recurso};
-				var tratamientoRecurso = await _repository.GetByFilter<TratamientoRecurso>(t => 
+				var includes = new List<string>() { "Recurso" };
+				var tratamientoRecurso = await _repository.GetByFilterString<TratamientoRecurso>(t => 
 					t.Tratamiento.IdNivelDolor == consulta.IdNivelDolor && 
 					t.Tratamiento.IdZona == consulta.IdZona,
 					//consulta.Usuario.PuntajeEncuesta >= t.Tratamiento.PuntajeMinimo && 
 					//consulta.Usuario.PuntajeEncuesta <= t.Tratamiento.PuntajeMaximo, 
-					0,0, includes);
+					includes);
 
 				var result = tratamientoRecurso.ToList().Select(r => r.Recurso);
 	

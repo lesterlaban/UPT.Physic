@@ -23,7 +23,8 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var result = await _repository.GetAll<Usuario>(u=> u.Rol);
+				var includes = new List<string>() { "Rol" };
+				var result = await _repository.GetByFilterString<Usuario>(u=> u.Estado, includes);
 				return result;
 			});
 		}
@@ -66,7 +67,7 @@ namespace UPT.Physic.Controllers
 			return await InvokeAsyncFunction(async () =>
 			{
 				var usuarioUpper = string.IsNullOrEmpty(entidad.Nombre) ? string.Empty : entidad.Nombre.Trim().ToUpper();
-				var existing = await _repository.GetByFilter<Usuario>(u => 
+				var existing = await _repository.GetByFilterString<Usuario>(u => 
 					u.Nombre.Trim().ToUpper() == usuarioUpper);
 				if(existing.Any())
 					throw new ApplicationException($"Usuario con código {entidad.Nombre} ya existe, favor digite otro usuario.");

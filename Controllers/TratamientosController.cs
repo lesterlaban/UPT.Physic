@@ -22,8 +22,8 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var includes = new Expression<Func<Tratamiento, object>>[] { u => u.NivelDolor, u => u.ZonaDolor};
-				var result = await _repository.GetByFilter<Tratamiento>(e => e.Estado, 0, 0, includes);
+				var includes = new List<string>() { "NivelDolor", "ZonaDolor"};
+				var result = await _repository.GetByFilterString<Tratamiento>(e => e.Estado, includes);
 				return result;
 			});
 		}

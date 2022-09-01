@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UPT.Physic.DataAccess;
 using UPT.Physic.Models;
@@ -19,7 +20,7 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var result = await _repository.GetByFilter<NivelDolor>(e => e.Estado);
+				var result = await _repository.GetByFilterString<NivelDolor>(e => e.Estado);
 				return result;
 			});
 		}		

@@ -24,7 +24,7 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var result = await _repository.GetAll<Usuario>(u=> u.Estado);
+				var result = await _repository.GetAll<Usuario>();
 				return result;
 			});
 		}

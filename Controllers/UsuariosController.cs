@@ -17,6 +17,21 @@ namespace UPT.Physic.Controllers
 		{
 		}
 
+
+		[Route("All")]
+		[HttpGet]
+		public async Task<IActionResult> GetAllTest()
+		{
+			return await InvokeAsyncFunction(async () =>
+			{
+				var result = await _repository.GetAll<Usuario>(u=> u.Estado);
+				return result;
+			});
+		}
+
+
+
+
 		[Route("")]
 		[HttpGet]
 		public async Task<IActionResult> GetAll()

@@ -25,7 +25,7 @@ namespace UPT.Physic.Controllers
         {
             try
             {
-                Console.Write("EJECUTAR INVOKE");
+                Console.Write("EJECUTAR INVOKE...");
                 var resultado = await funcion.Invoke();
                 return Ok(resultado);
             }

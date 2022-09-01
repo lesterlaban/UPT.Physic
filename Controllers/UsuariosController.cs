@@ -24,6 +24,7 @@ namespace UPT.Physic.Controllers
 			return await InvokeAsyncFunction(async () =>
 			{
 				var includes = new List<string>() { "Rol" };
+				Console.Write("GetAll -> GetByFilterString");
 				var result = await _repository.GetByFilterString<Usuario>(u=> u.Estado, includes);
 				return result;
 			});

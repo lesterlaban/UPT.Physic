@@ -13,7 +13,7 @@ namespace UPT.Physic.DataAccess
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql(_configuracion["upt-physic"]);
+            => optionsBuilder.UseNpgsql("Server=ec2-3-231-82-226.compute-1.amazonaws.com;Database=d6kli73ecg3dgd;Port=5432;User Id=scyopphzgnfcoy;Password=b89b703aa9b78efa4560aa53acaad85494fb30b7267f1d9e0d5cc4e40c69a7e0; sslmode=Require; Trust Server Certificate=true;");
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.SetRolEntity();
@@ -24,8 +24,7 @@ namespace UPT.Physic.DataAccess
             modelBuilder.SetRangoSeccionEntity();
             modelBuilder.SetPreguntaEntity();
             modelBuilder.SetPreguntaUsuarioEntity();
-            modelBuilder.SetSeccionUsuarioEntity();
-            
+            modelBuilder.SetSeccionUsuarioEntity();            
 
             modelBuilder.SetNivelDolorEntity();
             modelBuilder.SetZonaDolorEntity();

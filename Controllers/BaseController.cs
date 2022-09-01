@@ -46,7 +46,7 @@ namespace UPT.Physic.Controllers
             catch (Exception excepcion)
             {
                 //Logger.Write("Error 500: " + excepcion.Message);
-                return BadRequest(excepcion.ToString());
+                return BadRequest(excepcion.Message);
             }
         }
 

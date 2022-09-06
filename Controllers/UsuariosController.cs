@@ -49,6 +49,23 @@ namespace UPT.Physic.Controllers
 			});
 		}
 
+		[Route("{id}")]
+		[HttpGet]
+		public async Task<IActionResult> GetBytId(int id)
+		{
+			return await InvokeAsyncFunction(async () =>
+			{
+				var includes = new List<string>() { "SeccionUsuario"};
+				var resultList = await _repository.GetByFilterString<Usuario>(c => 
+					c.Id == id ,includes);
+				var result = resultList.FirstOrDefault();
+				if(result == null)
+					throw new ApplicationException($"Usuario no encontrado con id {id}.");
+
+
+				return result;
+			});
+		}
 
 		[Route("Roles")]
 		[HttpGet]

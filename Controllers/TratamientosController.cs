@@ -61,7 +61,7 @@ namespace UPT.Physic.Controllers
 		}	
 
 		[HttpDelete]
-		[Route("id")]
+		[Route("{id}")]
 		public async Task<IActionResult> Delete(int id)
 		{
 			return await InvokeAsyncFunction(async () =>

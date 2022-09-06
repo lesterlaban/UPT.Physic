@@ -54,9 +54,9 @@ namespace UPT.Physic.Controllers
 				var includes = new List<string>() { "Recurso" };
 				var tratamientoRecurso = await _repository.GetByFilterString<TratamientoRecurso>(t => 
 					t.Tratamiento.IdNivelDolor == consulta.IdNivelDolor && 
-					t.Tratamiento.IdZona == consulta.IdZona,
-					//consulta.Usuario.PuntajeEncuesta >= t.Tratamiento.PuntajeMinimo && 
-					//consulta.Usuario.PuntajeEncuesta <= t.Tratamiento.PuntajeMaximo, 
+					t.Tratamiento.IdZona == consulta.IdZona &&
+					consulta.Usuario.PuntajeEncuesta >= t.Tratamiento.PuntajeMinimo && 
+					consulta.Usuario.PuntajeEncuesta <= t.Tratamiento.PuntajeMaximo, 
 					includes);
 
 				var result = tratamientoRecurso.ToList().Select(r => r.Recurso);

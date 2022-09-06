@@ -17,21 +17,6 @@ namespace UPT.Physic.Controllers
 		{
 		}
 
-
-		[Route("All")]
-		[HttpGet]
-		public async Task<IActionResult> GetAllTest()
-		{
-			return await InvokeAsyncFunction(async () =>
-			{
-				var result = await _repository.GetAll<Usuario>();
-				return result;
-			});
-		}
-
-
-
-
 		[Route("")]
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
@@ -39,10 +24,7 @@ namespace UPT.Physic.Controllers
 			return await InvokeAsyncFunction(async () =>
 			{
 				var includes = new List<string>() { "Rol" };
-				Console.Write("GetAll -> GetByFilterString");
 				var result = await _repository.GetByFilterString<Usuario>(u=> u.Estado, includes);
-				Console.Write("GetAll uSERS RESULT ---");
-				Console.Write(result);
 				return result;
 			});
 		}

@@ -58,11 +58,9 @@ namespace UPT.Physic.DataAccess
         public async Task<List<TEntity>> GetByFilterString<TEntity>(
             Expression<Func<TEntity, bool>> filter, List<string> includes = null) where TEntity : class
         {
-            Console.Write("GetByFilterString -> set");
             IQueryable<TEntity> result = _context.Set<TEntity>().Where(filter);
             if(includes != null)
                 includes.ToList().ForEach(i => result = result.Include(i));
-            Console.Write("GetByFilterString -> To List Async");
             return await result.ToListAsync();
         }
 

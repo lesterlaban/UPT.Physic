@@ -51,9 +51,14 @@ namespace UPT.Physic.Controllers
 					Nombre = result.Nombre,
 					Contrasenia = result.Contrasenia,
 					IdRol = result.IdRol,
-					Rol = result.Rol,
+					Rol = new Rol()
+					{
+						Id = result.Rol.Id,
+						Codigo = result.Rol.Codigo,
+						Estado = result.Rol.Estado,
+					},
 					Estado = result.Estado,
-					TieneEncuesta = result.PreguntaUsuario != null  || !result.PreguntaUsuario.Any() ? false : true,
+					TieneEncuesta = result.PreguntaUsuario == null ? false : (result.PreguntaUsuario.Any() ? true : false),
 				};
 				return usuarioResult;
 			});

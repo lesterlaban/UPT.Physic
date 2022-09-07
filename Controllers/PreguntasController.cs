@@ -98,7 +98,7 @@ namespace UPT.Physic.Controllers
 							Estado = true,
 						}).ToList();
 
-				var pregutnasUsuario = entidad.Select(p=> new PreguntaUsuario()
+				var preguntaUsuario = entidad.Select(p=> new PreguntaUsuario()
 				{
 					IdPregunta = p.IdPregunta,
 					IdUsuario = p.IdUsuario,
@@ -106,7 +106,7 @@ namespace UPT.Physic.Controllers
 					Estado = true,
 				}).ToList();
 				await _repository.AddList(seccionUsuario);
-				await _repository.AddList(pregutnasUsuario);
+				await _repository.AddList(preguntaUsuario);
 
 				await _repository.SaveChangesAsync();
 				return true;

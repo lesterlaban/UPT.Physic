@@ -10,8 +10,8 @@ namespace UPT.Physic.Models
 		public string Contrasenia { get; set; }
 		public int IdRol { get; set; }
 		public virtual Rol Rol { get; set; }
-		public bool Estado{ get; set; }
-		public bool TieneEncuesta => SeccionUsuario == null || !SeccionUsuario.Any() ? false : true;
+		public bool Estado { get; set; }
+		public bool TieneEncuesta { get; set; }
 		
 		public virtual List<PreguntaUsuario> PreguntaUsuario { get; set; }
 		public virtual List<SeccionUsuario> SeccionUsuario { get; set; }

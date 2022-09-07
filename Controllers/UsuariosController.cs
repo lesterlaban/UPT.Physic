@@ -35,7 +35,7 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var includes = new List<string>() { "Rol" };
+				var includes = new List<string>() { "Rol", "PreguntaUsuario" };
 				var usuarioUpper = string.IsNullOrEmpty(usuario) ? string.Empty : usuario.Trim().ToUpper();
 				var list = await _repository.GetByFilterString<Usuario>(u => 
 					u.Nombre.Trim().ToUpper() ==  usuarioUpper && 
@@ -45,6 +45,17 @@ namespace UPT.Physic.Controllers
 				var result = list.FirstOrDefault();
 				if(result == null)
 					throw new ApplicationException($"Usuario o contraseña no válidos.");
+				var usuarioResult = new Usuario()
+				{
+					Id = result.Id,
+					Nombre = result.Nombre,
+					Contrasenia = result.Contrasenia,
+					IdRol = result.IdRol,
+					Rol = result.Rol,
+					Estado = result.Estado,
+					TieneEncuesta = result.PreguntaUsuario != null  || !result.PreguntaUsuario.Any() ? false : true,
+				};
+				
 				return result;
 			});
 		}

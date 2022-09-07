@@ -21,7 +21,7 @@ namespace UPT.Physic.Models
 		public virtual List<RangoSeccion> Rangos { get; set; }
 		public virtual List<Pregunta> Preguntas { get; set; }
 		public virtual List<SeccionUsuario> SeccionUsuario { get; set; }
-		
+		public RangoSeccion RangoValido { get; set; }
 	}
 
 	public class RangoSeccion

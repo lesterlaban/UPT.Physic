@@ -70,15 +70,46 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var includes = new List<string>() { "SeccionUsuario"};
+				var includes = new List<string>() { "SeccionUsuario", "SeccionUsuario.Seccion", "SeccionUsuario.Seccion.Encuesta", "SeccionUsuario.Seccion.Rangos"};
 				var resultList = await _repository.GetByFilterString<Usuario>(c => 
 					c.Id == id ,includes);
 				var result = resultList.FirstOrDefault();
 				if(result == null)
 					throw new ApplicationException($"Usuario no encontrado con id {id}.");
 
-
-				return result;
+				var resultUser = new Usuario()
+				{
+					Id = result.Id,
+					Nombre = result.Nombre,
+					IdRol = result.IdRol,					
+					SeccionUsuario = result.SeccionUsuario.Select(s=> new SeccionUsuario()
+					{
+						Id = s.Id,
+						IdEncuestaSeccion = s.IdEncuestaSeccion,
+						IdUsuario = s.IdUsuario,
+						Puntaje = s.Puntaje,
+						Estado = s.Estado,
+						Seccion = new EncuestaSeccion()
+						{
+							Id = s.Seccion.Id,
+							IdEncuesta = s.Seccion.IdEncuesta,
+							Nombre = s.Seccion.Nombre,
+							Indicadores = s.Seccion.Indicadores,
+							Encuesta = new Encuesta()
+							{
+								Nombre = s.Seccion.Encuesta?.Nombre,
+								Id = s.Seccion.Encuesta?.Id ?? 0,
+							},
+							RangoValido = s.Seccion.Rangos.FirstOrDefault(r=> s.Puntaje >= r.ValorMinimo && s.Puntaje <= r.ValorMaximo),
+						},
+					}).ToList(),
+				};
+				resultUser.SeccionUsuario.ForEach(s=>
+				{
+					if(s.Seccion?.RangoValido != null)
+						s.Seccion.RangoValido.Seccion = null;
+				} );
+				return resultUser;
 			});
 		}
 

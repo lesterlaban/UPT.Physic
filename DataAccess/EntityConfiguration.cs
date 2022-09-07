@@ -61,6 +61,7 @@ namespace UPT.Physic.DataAccess
                 entity.HasOne<Encuesta>(e => e.Encuesta)
                     .WithMany(g => g.Secciones)
                     .HasForeignKey(s => s.IdEncuesta);
+                entity.Ignore(e=> e.RangoValido);
             });
         }
 

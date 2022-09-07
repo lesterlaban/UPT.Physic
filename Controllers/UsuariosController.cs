@@ -55,8 +55,7 @@ namespace UPT.Physic.Controllers
 					Estado = result.Estado,
 					TieneEncuesta = result.PreguntaUsuario != null  || !result.PreguntaUsuario.Any() ? false : true,
 				};
-				
-				return result;
+				return usuarioResult;
 			});
 		}
 

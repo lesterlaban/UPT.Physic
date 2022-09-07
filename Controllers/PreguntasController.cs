@@ -78,15 +78,25 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				await _repository.AddList(entidad);
-				var section = entidad.GroupBy(l => l.IdPregunta)
+				var seccionUsuario = entidad.GroupBy(l => l.IdPregunta)
 					.Select(cl => new SeccionUsuario
 						{
 							IdEncuestaSeccion = cl.FirstOrDefault()?.Pregunta?.IdEncuestaSeccion ?? 0,
 							IdUsuario = cl.FirstOrDefault()?.IdUsuario ?? 0,
 							Puntaje = cl.Sum(c => c.Puntaje),
+							Estado = true,
 						}).ToList();
-				await _repository.AddList(section);
+
+				var pregutnasUsuario = entidad.Select(p=> new PreguntaUsuario()
+				{
+					IdPregunta = p.IdPregunta,
+					IdUsuario = p.IdUsuario,
+					Puntaje = p.Puntaje,
+					Estado = true,
+				}).ToList();
+				await _repository.AddList(seccionUsuario);
+				await _repository.AddList(pregutnasUsuario);
+
 				await _repository.SaveChangesAsync();
 				return true;
 			});

@@ -25,9 +25,7 @@ namespace UPT.Physic.Controllers
         {
             try
             {
-                Console.Write("EJECUTAR INVOKE...");
                 var resultado = await funcion.Invoke();
-                Console.Write("InvokeAsyncFunction -> To OK");
                 return Ok(resultado);
             }
             catch (KeyNotFoundException excepcion)
@@ -48,7 +46,9 @@ namespace UPT.Physic.Controllers
             catch (Exception excepcion)
             {
                 //Logger.Write("Error 500: " + excepcion.Message);
-                Console.Write(excepcion.Message);
+                string mensaje = excepcion.Message + excepcion.InnerException?.Message;
+                Console.Write(mensaje);
+
                 return BadRequest(excepcion.Message);
             }
         }

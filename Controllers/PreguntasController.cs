@@ -65,9 +65,14 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var entity = await _repository.GetByKeys<Pregunta>(id);
-				await _repository.RemoveAsync(entity);
-				await _repository.SaveChangesAsync();
+				var elements = await _repository.GetByFilterString<Pregunta>(p=> p.Id == id, 
+					new List<string>(){"PreguntaUsuario"});
+				var deleted = elements.FirstOrDefault();
+				if( deleted != null) 
+				{
+					await _repository.RemoveAsync(deleted);
+					await _repository.SaveChangesAsync();
+				}
 				return true;
 			});
 		}	

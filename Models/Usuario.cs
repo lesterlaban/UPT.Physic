@@ -15,9 +15,7 @@ namespace UPT.Physic.Models
 		
 		public virtual List<PreguntaUsuario> PreguntaUsuario { get; set; }
 		public virtual List<SeccionUsuario> SeccionUsuario { get; set; }
-
 		public virtual List<RegistroConsulta> Consultas { get; set; }
-
 		public int PuntajeEncuesta => PreguntaUsuario != null ? PreguntaUsuario.Sum(p=> p.Puntaje) : 0;
 	}
 	public class Rol

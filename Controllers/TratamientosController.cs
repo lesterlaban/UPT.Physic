@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using UPT.Physic.DataAccess;
@@ -66,9 +67,14 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var entity = await _repository.GetByKeys<Tratamiento>(id);
-				await _repository.RemoveAsync(entity);
-				await _repository.SaveChangesAsync();
+				var elements = await _repository.GetByFilterString<Tratamiento>(p=> p.Id == id,
+					new List<string>(){"Recursos"});
+				var deleted = elements.FirstOrDefault();
+				if( deleted != null) 
+				{
+					await _repository.RemoveAsync(deleted);
+					await _repository.SaveChangesAsync();
+				}
 				return true;
 			});
 		}		

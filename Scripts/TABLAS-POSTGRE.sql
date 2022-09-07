@@ -2,13 +2,17 @@
 drop table registro_consulta;
 drop table tratamiento_recurso;
 drop table tratamiento;
-drop table encuesta;
-drop table usuario;
-drop table rol;
-drop table pregunta;
 drop table nivel_dolor;
 drop table zona_dolor;
 drop table recurso;
+drop table encuesta_seccion_usuario;
+drop table pregunta_usuario;
+drop table pregunta;
+drop table rango_seccion;
+drop table encuesta_seccion;
+drop table encuesta;
+drop table usuario;
+drop table rol;
 */
 
 create table rol
@@ -102,16 +106,6 @@ INSERT INTO usuario (nombre, contrasenia, idrol, estado) VALUES
 INSERT INTO usuario (nombre, contrasenia, idrol, estado) VALUES 
 ('LESTER', '123456', 2, true);
 
-/*
-drop table encuesta_seccion_usuario;
-drop table pregunta_usuario;
-drop table pregunta;
-drop table rango_seccion;
-drop table encuesta_seccion;
-drop table encuesta;
-select * from encuesta_seccion
-select * from pregunta
-*/
 create table encuesta
 (
 	id int generated always as identity,

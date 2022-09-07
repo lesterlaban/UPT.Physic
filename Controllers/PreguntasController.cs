@@ -72,13 +72,24 @@ namespace UPT.Physic.Controllers
 			});
 		}	
 
+		[HttpGet]
+		[Route("RangosSeccion")]
+		public async Task<IActionResult> GetRangosSeccion()
+		{
+			return await InvokeAsyncFunction(async () =>
+			{
+				var entity = await _repository.GetByFilterString<RangoSeccion>(r => r.Estado);
+				return entity;
+			});
+		}	
+
 		[HttpPost]
 		[Route("Usuarios")]
 		public async Task<IActionResult> AddPreguntasUsuario([FromBody] List<PreguntaUsuario> entidad)
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var seccionUsuario = entidad.GroupBy(l => l.IdPregunta)
+				var seccionUsuario = entidad.GroupBy(l => l.Pregunta.IdEncuestaSeccion)
 					.Select(cl => new SeccionUsuario
 						{
 							IdEncuestaSeccion = cl.FirstOrDefault()?.Pregunta?.IdEncuestaSeccion ?? 0,

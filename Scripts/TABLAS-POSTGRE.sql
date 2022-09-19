@@ -60,28 +60,6 @@ create table recurso
 	primary key (id)
 );
 
-create table tratamiento
-(
-	id int generated always as identity,
-	idzona int not null,
-	idniveldolor int not null,
-	puntajeminimo int not null,
-	puntajemaximo int not null,
-	estado boolean not null,
-	primary key (id),
-	foreign key (idniveldolor) references nivel_dolor(id),
-	foreign key (idzona) references zona_dolor(id)
-);
-
-create table tratamiento_recurso
-(
-	id int generated always as identity,
-	idtratamiento int not null,
-	idrecurso int not null,
-	primary key (id),
-	foreign key (idtratamiento) references tratamiento(id),
-	foreign key (idrecurso) references recurso(id)
-);
 
 create table registro_consulta
 (
@@ -171,6 +149,32 @@ create table encuesta_seccion_usuario
 	foreign key (idencuestaseccion) references encuesta_seccion(id)
 );
 
+create table tratamiento
+(
+	id int generated always as identity,
+	idzona int not null,
+	idniveldolor int not null,
+	idencuesta int not null,
+	puntajeminimo int not null,
+	puntajemaximo int not null,
+	estado boolean not null,
+	primary key (id),
+	foreign key (idniveldolor) references nivel_dolor(id),
+	foreign key (idzona) references zona_dolor(id),
+	foreign key (idencuesta) references encuesta(id)
+);
+
+create table tratamiento_recurso
+(
+	id int generated always as identity,
+	idtratamiento int not null,
+	idrecurso int not null,
+	primary key (id),
+	foreign key (idtratamiento) references tratamiento(id),
+	foreign key (idrecurso) references recurso(id)
+);
+
+
 INSERT INTO encuesta(nombre) values
 ('Escala de Tampa'),
 ('Escala de Catastrofización'),
@@ -248,5 +252,3 @@ INSERT INTO pregunta(idencuestaseccion, descripcion) values
 (4, 'Sentí miedo sin ninguna razón.'),
 (3, 'Sentí que la vida no valía nada.')
 ;
-
-

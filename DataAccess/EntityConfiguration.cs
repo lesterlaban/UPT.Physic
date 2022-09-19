@@ -44,6 +44,7 @@ namespace UPT.Physic.DataAccess
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.Nombre).HasColumnName("nombre");
                 entity.Property(e => e.Estado).HasColumnName("estado");
+                entity.Ignore(e => e.Puntaje);
             });
         }
 
@@ -187,6 +188,7 @@ namespace UPT.Physic.DataAccess
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.IdZona).HasColumnName("idzona");
                 entity.Property(e => e.IdNivelDolor).HasColumnName("idniveldolor");
+                entity.Property(e => e.IdEncuesta).HasColumnName("idencuesta");
                 entity.Property(e => e.PuntajeMaximo).HasColumnName("puntajemaximo");
                 entity.Property(e => e.PuntajeMinimo).HasColumnName("puntajeminimo");
                 entity.Property(e => e.Estado).HasColumnName("estado");

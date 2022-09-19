@@ -12,7 +12,6 @@ namespace UPT.Physic.Models
 		public virtual Rol Rol { get; set; }
 		public bool Estado { get; set; }
 		public bool TieneEncuesta { get; set; }
-		
 		public virtual List<PreguntaUsuario> PreguntaUsuario { get; set; }
 		public virtual List<SeccionUsuario> SeccionUsuario { get; set; }
 		public virtual List<RegistroConsulta> Consultas { get; set; }

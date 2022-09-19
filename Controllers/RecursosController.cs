@@ -45,22 +45,37 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var includesRegistro = new List<string>() { "Usuario" };
+				var includesRegistro = new List<string>() { "Usuario.SeccionUsuario.Seccion" };
 				var list = await _repository.GetByFilterString<RegistroConsulta>(c=> c.Id == idConsulta, includesRegistro);
 				var consulta = list.FirstOrDefault();
 				if(consulta == null)
 					throw new ApplicationException($"No se encontró la consulta con clave {idConsulta}.");
-
+			
 				var includes = new List<string>() { "Recurso" };
 				var tratamientoRecurso = await _repository.GetByFilterString<TratamientoRecurso>(t => 
 					t.Tratamiento.IdNivelDolor == consulta.IdNivelDolor && 
-					t.Tratamiento.IdZona == consulta.IdZona &&
-					consulta.Usuario.PuntajeEncuesta >= t.Tratamiento.PuntajeMinimo && 
-					consulta.Usuario.PuntajeEncuesta <= t.Tratamiento.PuntajeMaximo, 
+					t.Tratamiento.IdZona == consulta.IdZona ,
+					//&& consulta.Usuario.SeccionUsuario.Select(s => s.Seccion.IdEncuesta).Contains(t.Tratamiento.IdEncuesta)
 					includes);
 
-				var result = tratamientoRecurso.ToList().Select(r => r.Recurso);
-	
+				var encuestasPuntaje = consulta.Usuario.SeccionUsuario.GroupBy(s => s.Seccion.IdEncuesta)
+					.Select(e => new Encuesta
+					{
+						Id = e.FirstOrDefault()?.Seccion?.IdEncuesta ?? 0,
+						Puntaje = e.Sum(c => c.Puntaje),
+						Estado = true,
+					}).ToList();
+
+				List<TratamientoRecurso> resultFitler = new List<TratamientoRecurso>();
+
+				foreach(var encuesta in encuestasPuntaje)
+				{
+					resultFitler.AddRange(tratamientoRecurso.Where(t => encuesta.Puntaje >= t.Tratamiento.PuntajeMinimo 
+						&& encuesta.Puntaje <= t.Tratamiento.PuntajeMaximo
+						&& encuesta.Id == t.Tratamiento.IdEncuesta));
+				}
+
+				var result = resultFitler.ToList().Select(r => r.Recurso);
 				return result.Distinct();
 			});
 		}	

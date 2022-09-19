@@ -47,6 +47,8 @@ namespace UPT.Physic.Controllers
 
 				var resultQuery = await _repository.GetByFilterString<RegistroConsulta>(expression, includes);
 
+
+
 				var result = resultQuery.Select(r => new RegistroConsulta()
 				{
 					Id = r.Id,

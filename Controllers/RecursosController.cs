@@ -51,11 +51,10 @@ namespace UPT.Physic.Controllers
 				if(consulta == null)
 					throw new ApplicationException($"No se encontró la consulta con clave {idConsulta}.");
 			
-				var includes = new List<string>() { "Recurso" };
+				var includes = new List<string>() { "Recurso" , "Tratamiento"};
 				var tratamientoRecurso = await _repository.GetByFilterString<TratamientoRecurso>(t => 
 					t.Tratamiento.IdNivelDolor == consulta.IdNivelDolor && 
 					t.Tratamiento.IdZona == consulta.IdZona ,
-					//&& consulta.Usuario.SeccionUsuario.Select(s => s.Seccion.IdEncuesta).Contains(t.Tratamiento.IdEncuesta)
 					includes);
 
 				var encuestasPuntaje = consulta.Usuario.SeccionUsuario.GroupBy(s => s.Seccion.IdEncuesta)

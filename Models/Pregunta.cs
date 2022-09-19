@@ -9,6 +9,7 @@ namespace UPT.Physic.Models
 		public string Nombre { get; set; }
 		public bool Estado{ get; set; }
 		public virtual List<EncuestaSeccion> Secciones { get; set; }
+		public virtual List<Tratamiento> Tratamientos { get; set; }
 		public int Puntaje { get; set; }
 	}
 

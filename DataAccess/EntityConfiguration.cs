@@ -198,6 +198,9 @@ namespace UPT.Physic.DataAccess
                 entity.HasOne<ZonaDolor>(e => e.ZonaDolor)
                     .WithMany(g => g.Tratamientos)
                     .HasForeignKey(s => s.IdZona);
+                entity.HasOne<Encuesta>(e => e.Encuesta)
+                    .WithMany(g => g.Tratamientos)
+                    .HasForeignKey(s => s.IdEncuesta);
             });
         }
         public static void SetTratamientoRecursoEntity(this ModelBuilder modelBuilder)

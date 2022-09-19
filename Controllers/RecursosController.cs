@@ -66,14 +66,12 @@ namespace UPT.Physic.Controllers
 					}).ToList();
 
 				List<TratamientoRecurso> resultFitler = new List<TratamientoRecurso>();
-
-				foreach(var encuesta in encuestasPuntaje)
-				{
-					resultFitler.AddRange(tratamientoRecurso.Where(t => encuesta.Puntaje >= t.Tratamiento.PuntajeMinimo 
-						&& encuesta.Puntaje <= t.Tratamiento.PuntajeMaximo
-						&& encuesta.Id == t.Tratamiento.IdEncuesta));
-				}
-
+				encuestasPuntaje.ForEach(e => 
+					resultFitler.AddRange(tratamientoRecurso.Where(
+						t => e.Puntaje >= t.Tratamiento.PuntajeMinimo 
+						&& e.Puntaje <= t.Tratamiento.PuntajeMaximo
+						&& e.Id == t.Tratamiento.IdEncuesta)));
+			
 				var result = resultFitler.ToList().Select(r => r.Recurso);
 				return result.Distinct();
 			});

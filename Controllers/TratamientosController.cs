@@ -39,6 +39,7 @@ namespace UPT.Physic.Controllers
 				if(consulta == null)
 					throw new ApplicationException($"No se encontró la consulta con clave {idConsulta}.");
 
+
 				var includes = new List<string>() { "NivelDolor", "ZonaDolor", "Recursos" };
 				var result = await _repository.GetByFilterString<Tratamiento>(t => 
 					t.IdNivelDolor == consulta.IdNivelDolor && 

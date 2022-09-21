@@ -188,6 +188,12 @@ INSERT INTO encuesta_seccion(idencuesta, nombre, indicadores) values
 (3, 'Estrés', 'Dificultad para relajarse, Excitación nerviosa, Puede ser fácilmente alterado, Momentos irritables, Impaciente')
 ;
 INSERT INTO rango_seccion(nombre, idencuestaseccion, valorminimo, valormmaximo) values
+('Bajo', 1, 11, 27),
+('Alto', 1, 28, 1000),
+
+('Bajo', 2, 0, 26),
+('Alto', 2, 27, 1000),
+
 ('Normal', 3, 0, 4),
 ('Leve', 3, 5, 6),
 ('Moderado', 3, 7, 10),

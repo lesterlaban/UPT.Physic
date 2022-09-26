@@ -81,6 +81,25 @@ namespace UPT.Physic.Controllers
 				await _repository.SaveChangesAsync();
 				return entidad.Id;
 			});
+		}
+
+		[HttpPut]
+		public async Task<IActionResult> Update([FromBody] Tratamiento newTratamiento)
+		{
+			return await InvokeAsyncFunction(async () =>
+			{
+				var elements = await _repository.GetByFilterString<Tratamiento>(p=> p.Id == newTratamiento.Id,
+					new List<string>(){"Recursos"});
+				var tratamiento = elements.FirstOrDefault();
+				if(tratamiento != null) 
+				{
+					tratamiento.PuntajeMaximo = newTratamiento.PuntajeMaximo;
+					tratamiento.PuntajeMinimo = newTratamiento.PuntajeMinimo;
+					tratamiento.Recursos = newTratamiento.Recursos;
+					await _repository.SaveChangesAsync();
+				}
+				return true;
+			});
 		}	
 
 		[HttpDelete]

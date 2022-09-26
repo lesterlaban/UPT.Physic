@@ -73,6 +73,8 @@ namespace UPT.Physic.Controllers
 						&& e.Id == t.Tratamiento.IdEncuesta)));
 			
 				var result = resultFitler.ToList().Select(r => r.Recurso);
+
+				
 				return result.Distinct();
 			});
 		}	

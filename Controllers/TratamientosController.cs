@@ -24,7 +24,29 @@ namespace UPT.Physic.Controllers
 			return await InvokeAsyncFunction(async () =>
 			{
 				var includes = new List<string>() { "NivelDolor", "ZonaDolor"};
-				var result = await _repository.GetByFilterString<Tratamiento>(e => e.Estado, includes);
+				var resultQuery = await _repository.GetByFilterString<Tratamiento>(e => e.Estado, includes);
+				var result = resultQuery.Select(r=> new Tratamiento()
+				{
+					Id = r.Id,
+					IdEncuesta = r.IdEncuesta,
+					IdZona = r.IdZona,
+					IdNivelDolor = r.IdNivelDolor,
+					PuntajeMinimo = r.PuntajeMinimo,
+					PuntajeMaximo = r.PuntajeMaximo,
+					Estado = r.Estado,
+					NivelDolor = new NivelDolor()
+					{
+						Id = r.IdNivelDolor,
+						Descripcion = r.NivelDolor.Descripcion,
+						Estado = r.NivelDolor.Estado,
+					},
+					ZonaDolor= new ZonaDolor()
+					{
+						Id = r.IdZona,
+						Descripcion = r.ZonaDolor.Descripcion,
+						Estado = r.ZonaDolor.Estado,
+					}
+				});
 				return result;
 			});
 		}

@@ -46,7 +46,7 @@ namespace UPT.Physic.Controllers
 						Descripcion = r.ZonaDolor.Descripcion,
 						Estado = r.ZonaDolor.Estado,
 					}
-				});
+				}).OrderByDescending(r => r.Id);
 				return result;
 			});
 		}

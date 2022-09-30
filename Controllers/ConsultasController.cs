@@ -43,7 +43,7 @@ namespace UPT.Physic.Controllers
 				expression = expression.AndAlso(c => c.Estado);
 
 				if(fechas.Any())
-					expression = expression.AndAlso(c => fechas.Contains(c.Fecha.Date));
+					expression = expression.AndAlso(c => fechas.Select(f=> f.Date).Contains(c.Fecha.Date));
 
 				var resultQuery = await _repository.GetByFilterString<RegistroConsulta>(expression, includes);
 

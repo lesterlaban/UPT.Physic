@@ -22,7 +22,7 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var includes = new List<string>() { "NivelDolor", "ZonaDolor"};
+				var includes = new List<string>() { "NivelDolor", "ZonaDolor", "EncuestaSeccion.Encuesta"};
 				var resultQuery = await _repository.GetByFilterString<Tratamiento>(e => e.Estado, includes);
 				var result = resultQuery.Select(r=> new Tratamiento()
 				{
@@ -44,7 +44,19 @@ namespace UPT.Physic.Controllers
 						Id = r.IdZona,
 						Descripcion = r.ZonaDolor.Descripcion,
 						Estado = r.ZonaDolor.Estado,
-					}
+					},
+					EncuestaSeccion = new EncuestaSeccion()
+					{
+						Id = r.EncuestaSeccion.Id,
+						IdEncuesta = r.EncuestaSeccion.IdEncuesta,
+						Nombre = r.EncuestaSeccion.Nombre,
+						Indicadores = r.EncuestaSeccion.Indicadores,
+						Encuesta = new Encuesta()
+						{
+							Id = r.EncuestaSeccion.Encuesta.Id,
+							Nombre = r.EncuestaSeccion.Encuesta.Nombre,
+						}
+					},
 				}).OrderByDescending(r => r.Id);
 				return result;
 			});

@@ -125,9 +125,51 @@ namespace UPT.Physic.Controllers
 		{
 			return await InvokeAsyncFunction(async () =>
 			{
-				var result = await _repository.GetByFilterString<Tratamiento>(p=> p.Id == id,
-					new List<string>(){"NivelDolor", "ZonaDolor","EncuestaSeccion","Recursos"});
-				return result.FirstOrDefault();
+				var resultQuery = await _repository.GetByFilterString<Tratamiento>(p=> p.Id == id,
+					new List<string>(){"NivelDolor", "ZonaDolor","EncuestaSeccion.Encuesta","Recursos"});
+
+				var result = resultQuery.FirstOrDefault();
+				if(result == null)
+					throw new KeyNotFoundException($"No se encontro tratamiento con id {id}.");
+
+				var newResult = new Tratamiento()
+				{
+					Id = result.Id,
+					IdZona = result.IdZona,
+					IdNivelDolor = result.IdNivelDolor,
+					IdEncuestaSeccion = result.IdEncuestaSeccion,
+					PuntajeMinimo = result.PuntajeMinimo,
+					PuntajeMaximo = result.PuntajeMaximo,
+					NivelDolor = new NivelDolor()
+					{
+						Id = result.NivelDolor.Id,
+						Descripcion = result.NivelDolor.Descripcion,
+					},
+					ZonaDolor = new ZonaDolor()
+					{
+						Id = result.ZonaDolor.Id,
+						Descripcion = result.ZonaDolor.Descripcion,
+					},
+					EncuestaSeccion = new EncuestaSeccion()
+					{
+						Id = result.EncuestaSeccion.Id,
+						IdEncuesta = result.EncuestaSeccion.IdEncuesta,
+						Nombre = result.EncuestaSeccion.Nombre,
+						Indicadores = result.EncuestaSeccion.Indicadores,
+						Encuesta = new Encuesta()
+						{
+							Id = result.EncuestaSeccion.Encuesta.Id,
+							Nombre = result.EncuestaSeccion.Encuesta.Nombre,
+						}
+					},
+					Recursos = result.Recursos.Select(r=> new TratamientoRecurso()
+					{
+						Id = r.IdRecurso,
+						IdTratamiento = r.IdTratamiento,
+						IdRecurso = r.IdRecurso,
+					}).ToList(),
+				};
+				return newResult;
 			});
 		}
 

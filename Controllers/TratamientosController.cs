@@ -126,7 +126,7 @@ namespace UPT.Physic.Controllers
 			return await InvokeAsyncFunction(async () =>
 			{
 				var result = await _repository.GetByFilterString<Tratamiento>(p=> p.Id == id,
-					new List<string>(){"NivelDolor", "ZonaDolor","Encuesta","Recursos"});
+					new List<string>(){"NivelDolor", "ZonaDolor","EncuestaSeccion","Recursos"});
 				return result.FirstOrDefault();
 			});
 		}

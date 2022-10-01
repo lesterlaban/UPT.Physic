@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using UPT.Physic.DataAccess;
 using UPT.Physic.Models;
@@ -28,7 +27,7 @@ namespace UPT.Physic.Controllers
 				var result = resultQuery.Select(r=> new Tratamiento()
 				{
 					Id = r.Id,
-					IdEncuesta = r.IdEncuesta,
+					IdEncuestaSeccion = r.IdEncuestaSeccion,
 					IdZona = r.IdZona,
 					IdNivelDolor = r.IdNivelDolor,
 					PuntajeMinimo = r.PuntajeMinimo,

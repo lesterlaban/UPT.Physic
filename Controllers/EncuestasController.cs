@@ -27,7 +27,6 @@ namespace UPT.Physic.Controllers
 				{
 					Id = r.Id,
 					Nombre = r.Nombre,
-					Estado = r.Estado,
 					Secciones = r.Secciones.Select(s => new EncuestaSeccion() 
 					{
 						Id = s.Id,
@@ -35,6 +34,11 @@ namespace UPT.Physic.Controllers
 						Nombre = s.Nombre,
 						Indicadores = s.Indicadores,
 						Estado = s.Estado,
+						Encuesta = new Encuesta()
+						{
+							Id = r.Id,
+							Nombre = r.Nombre,
+						},
 						Preguntas = s.Preguntas.Select(p=> new Pregunta
 						{
 							Id = p.Id,
@@ -60,6 +64,9 @@ namespace UPT.Physic.Controllers
 				return true;
 			});
 		}
+
+		
+
 
 	}
 }

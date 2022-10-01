@@ -8,13 +8,13 @@ namespace UPT.Physic.Models
 		public int Id { get; set; }
 		public int IdZona { get; set; }
 		public int IdNivelDolor { get; set; }
-		public int IdEncuesta { get; set; }
+		public int IdEncuestaSeccion { get; set; }
 		public int PuntajeMinimo { get; set; }
 		public int PuntajeMaximo { get; set; }
 		public bool Estado{ get; set; }
 		public virtual NivelDolor NivelDolor { get; set; }
 		public virtual ZonaDolor ZonaDolor { get; set; }
-		public virtual Encuesta Encuesta { get; set; }
+		public virtual EncuestaSeccion EncuestaSeccion { get; set; }
 		public virtual List<TratamientoRecurso> Recursos { get; set; }
 	}
 

@@ -58,9 +58,9 @@ namespace UPT.Physic.Controllers
 					includes);
 
 				var encuestasPuntaje = consulta.Usuario.SeccionUsuario.GroupBy(s => s.Seccion.IdEncuesta)
-					.Select(e => new Encuesta
+					.Select(e => new EncuestaSeccion
 					{
-						Id = e.FirstOrDefault()?.Seccion?.IdEncuesta ?? 0,
+						Id = e.FirstOrDefault()?.Seccion?.Id ?? 0,
 						Puntaje = e.Sum(c => c.Puntaje),
 						Estado = true,
 					}).ToList();
@@ -70,7 +70,7 @@ namespace UPT.Physic.Controllers
 					resultFitler.AddRange(tratamientoRecurso.Where(
 						t => e.Puntaje >= t.Tratamiento.PuntajeMinimo 
 						&& e.Puntaje <= t.Tratamiento.PuntajeMaximo
-						&& e.Id == t.Tratamiento.IdEncuesta)));
+						&& e.Id == t.Tratamiento.IdEncuestaSeccion)));
 			
 				var result = resultFitler.ToList().Select(r => r.Recurso);
 

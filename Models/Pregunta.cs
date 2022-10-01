@@ -9,21 +9,21 @@ namespace UPT.Physic.Models
 		public string Nombre { get; set; }
 		public bool Estado{ get; set; }
 		public virtual List<EncuestaSeccion> Secciones { get; set; }
-		public virtual List<Tratamiento> Tratamientos { get; set; }
-		public int Puntaje { get; set; }
 	}
-
+	
 	public class EncuestaSeccion
 	{
 		public int Id { get; set; }
 		public int IdEncuesta { get; set; }
 		public string Nombre { get; set; }
 		public string Indicadores { get; set; }
-		public bool Estado{ get; set; }
+		public bool Estado{ get; set; }		
+		public int Puntaje { get; set; }
 		public virtual Encuesta Encuesta { get; set; }
 		public virtual List<RangoSeccion> Rangos { get; set; }
 		public virtual List<Pregunta> Preguntas { get; set; }
 		public virtual List<SeccionUsuario> SeccionUsuario { get; set; }
+		public virtual List<Tratamiento> Tratamientos { get; set; }
 		public RangoSeccion RangoValido { get; set; }
 	}
 

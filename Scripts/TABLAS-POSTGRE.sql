@@ -154,14 +154,14 @@ create table tratamiento
 	id int generated always as identity,
 	idzona int not null,
 	idniveldolor int not null,
-	idencuesta int not null,
+	idencuestaseccion int not null,
 	puntajeminimo int not null,
 	puntajemaximo int not null,
 	estado boolean not null,
 	primary key (id),
 	foreign key (idniveldolor) references nivel_dolor(id),
 	foreign key (idzona) references zona_dolor(id),
-	foreign key (idencuesta) references encuesta(id)
+	foreign key (idencuestaseccion) references encuesta_seccion(id)
 );
 
 create table tratamiento_recurso

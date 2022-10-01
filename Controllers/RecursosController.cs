@@ -57,7 +57,7 @@ namespace UPT.Physic.Controllers
 					t.Tratamiento.IdZona == consulta.IdZona ,
 					includes);
 
-				var encuestasPuntaje = consulta.Usuario.SeccionUsuario.GroupBy(s => s.Seccion.IdEncuesta)
+				var encuestasPuntaje = consulta.Usuario.SeccionUsuario.GroupBy(s => s.IdEncuestaSeccion)
 					.Select(e => new EncuestaSeccion
 					{
 						Id = e.FirstOrDefault()?.Seccion?.Id ?? 0,
@@ -72,10 +72,15 @@ namespace UPT.Physic.Controllers
 						&& e.Puntaje <= t.Tratamiento.PuntajeMaximo
 						&& e.Id == t.Tratamiento.IdEncuestaSeccion)));
 			
-				var result = resultFitler.ToList().Select(r => r.Recurso);
-
-				
-				return result.Distinct();
+				var result = resultFitler.ToList().Select(r => r.Recurso).Distinct();
+				var newResult = result.Select(r=> new Recurso()
+				{
+					Id = r.Id,
+					Titulo = r.Titulo,
+					Descripcion = r.Descripcion,
+					Url = r.Url,
+				});
+				return newResult;
 			});
 		}	
 
